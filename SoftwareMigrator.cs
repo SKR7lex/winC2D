@@ -12,11 +12,11 @@ namespace winC2D
             if (!Directory.Exists(sw.InstallLocation))
                 throw new DirectoryNotFoundException(string.Format(Localization.T("Msg.SourceDirNotFoundFmt"), sw.InstallLocation));
 
-            string sourcePath = sw.InstallLocation;
+            string sourcePath = sw.InstallLocation.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
             string sourceTempPath = sourcePath + "_migrating_" + Guid.NewGuid().ToString("N");
 
             // 使用原安装目录名而非 DisplayName，并清洗非法字符/尾部空格句点
-            string originalFolderName = Path.GetFileName(sourcePath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
+            string originalFolderName = Path.GetFileName(sourcePath);
             if (string.IsNullOrEmpty(originalFolderName))
                 originalFolderName = sw.Name; // 兜底
             foreach (var c in Path.GetInvalidFileNameChars())
